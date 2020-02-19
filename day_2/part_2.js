@@ -5,25 +5,23 @@ const findBoxes = (input) => {
     const firstStr = input.shift();
     let currStr = '';
     let differentChars = 0;
-    
-    for (let str of input) {
+
+    for (const str of input) {
       currStr = str;
 
       for (let i = 0; i < firstStr.length; i++) {
         if (firstStr[i] !== currStr[i]) {
           differentChars++;
         }
-
       }
 
       if (differentChars === 1) {
         return [firstStr, currStr];
-      } else {
-        differentChars = 0;
       }
-    } 
+      differentChars = 0;
+    }
   }
-}
+};
 
 const findChars = (arr) => {
   let chars = '';
@@ -34,6 +32,6 @@ const findChars = (arr) => {
   }
 
   return chars;
-}
+};
 
 console.log(findChars(findBoxes(input)));

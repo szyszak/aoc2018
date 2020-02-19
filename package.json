@@ -1,0 +1,13 @@
+{
+  "name": "aoc2018",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "szyszak <krzszyszko@gmail.com>",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^5.12.1",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.15.0"
+  }
+}

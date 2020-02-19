@@ -1,10 +1,5 @@
 const fs = require('fs');
 
-// SIDEQUEST: visualize it
-
-// TODO: cleanup
-// . = free, # = taken, X = overlapping
-
 const parseInput = file => {
   const parsedInput = fs
     .readFileSync(file, 'utf8')
@@ -57,16 +52,12 @@ const fakeInput = [
 ];
 
 const simpleInput = [
-  { id: 1, pos: { x: 0, y: 0 }, size: { w: 5, h: 5 } },
-  { id: 2, pos: { x: 0, y: 0 }, size: { w: 5, h: 5 } },
-  { id: 3, pos: { x: 0, y: 0 }, size: { w: 5, h: 5 } },
-  // { id: 4, pos: { x: 429, y: 353 }, size: { w: 14, h: 25 } },
-  // { id: 5, pos: { x: 232, y: 934 }, size: { w: 29, h: 11 } },
-  // { id: 6, pos: { x: 796, y: 785 }, size: { w: 17, h: 18 } },
-  // { id: 7, pos: { x: 508, y: 96 }, size: { w: 11, h: 18 } },
-  // { id: 8, pos: { x: 83, y: 289 }, size: { w: 28, h: 23 } },
-  // { id: 9, pos: { x: 291, y: 46 }, size: { w: 21, h: 17 } },
-  // { id: 10, pos: { x: 505, y: 954 }, size: { w: 23, h: 15 } },
+  { id: 1, pos: { x: 0, y: 0 }, size: { w: 2, h: 2 } },
+  { id: 2, pos: { x: 5, y: 5 }, size: { w: 2, h: 2 } },
+  { id: 3, pos: { x: 0, y: 0 }, size: { w: 2, h: 2 } },
+  { id: 4, pos: { x: 9, y: 9 }, size: { w: 1, h: 1 } },
+  { id: 5, pos: { x: 8, y: 8 }, size: { w: 2, h: 2 } },
+  { id: 6, pos: { x: 8, y: 8 }, size: { w: 2, h: 2 } },
 ];
 
 class Matrix {
@@ -92,22 +83,32 @@ class Matrix {
 
   processInput(input) {
     const matrix = this.generate(this.width, this.height);
-    let conflictingTiles = 0;
+    let nonConflictingIDs = [];
 
     for (const obj of input) {
+      let isConflicting = false;
+
       for (let i = obj.pos.y; i < obj.pos.y + obj.size.h; i++) {
         for (let j = obj.pos.x; j < obj.pos.x + obj.size.w; j++) {
           if (matrix[i][j] === '.') {
             matrix[i][j] = '#';
           } else if (matrix[i][j] === '#') {
             matrix[i][j] = 'X';
-            conflictingTiles++;
           }
         }
       }
+
+      for (let i = obj.pos.y; i < obj.pos.y + obj.size.h; i++) {
+        for (let j = obj.pos.x; j < obj.pos.x + obj.size.w; j++) {
+          if (matrix[i][j] === 'X') isConflicting = true;
+          nonConflictingIDs = nonConflictingIDs.filter(id => id === obj.id);
+        }
+      }
+
+      if (!isConflicting) nonConflictingIDs.push(obj.id);
     }
 
-    console.log(`numer of conflicting tiles: ${conflictingTiles}`);
+    console.log(`non conflicting ID: ${nonConflictingIDs}`); // 1202 too high
     return matrix;
   }
 
@@ -116,6 +117,7 @@ class Matrix {
   }
 }
 
-const fabric = new Matrix(input);
+const fabric = new Matrix(simpleInput, 10, 10);
+// const fabric = new Matrix(input);
 
 console.log(fabric.conflictingTiles);

@@ -2,7 +2,7 @@ const input = require('./input');
 
 let result = 0;
 
-for (let str of input) {
+for (const str of input) {
   result += parseInt(str);
 }
 
